@@ -1,0 +1,118 @@
+<div *ngIf="meeting$ | async as meeting">
+  <h1 class="mb-6 text-2xl font-serif">Live meeting expense calculator</h1>
+  <h2 class="pb-3">Session: {{ meeting.id || 'Offline' }}</h2>
+
+  <div>
+    <div class="rounded-full bg-sky-200 mt-4 mb-4 me-2 inline-flex">
+      <label
+        for="value-input"
+        class="absolute -translate-y-4 translate-x-4 text-xs font-medium"
+      >
+        Rough hourly rate
+      </label>
+      <input
+        id="value-input"
+        type="number"
+        placeholder="25"
+        class="w-full outline-none px-2 py-2 ps-12 bg-transparent"
+        [ngModel]="meeting.hourlyRate"
+        (change)="updateMeeting({ hourlyRate: $any($event.target).value })"
+      />
+      <span class="absolute translate-y-3 translate-x-4 text-xs font-medium"
+        >€</span
+      >
+    </div>
+
+    <div class="rounded-full bg-sky-200 mt-4 mb-4 me-2 inline-flex">
+      <label
+        for="value-input"
+        class="absolute -translate-y-4 translate-x-4 text-xs font-medium"
+      >
+        Participants count
+      </label>
+      <input
+        id="value-input"
+        type="number"
+        placeholder="50"
+        class="w-full outline-none px-2 py-2 ps-12 bg-transparent"
+        [ngModel]="meeting.participantsCount"
+        (change)="
+          updateMeeting({
+            participantsCount: $any($event.target).value
+          })
+        "
+      />
+      <span class="absolute translate-y-3 translate-x-4 text-xs font-medium"
+        >Qty</span
+      >
+    </div>
+
+    <div
+      *ngIf="startedAt$ | async as startedAt"
+      class="rounded-full bg-sky-200 mt-4 mb-4 me-2 inline-flex"
+    >
+      <label
+        for="value-input"
+        class="absolute -translate-y-4 translate-x-4 text-xs font-medium"
+      >
+        Started at
+      </label>
+      <input
+        id="value-input"
+        type="datetime-local"
+        placeholder="50"
+        class="w-full outline-none px-2 py-2 ps-12 bg-transparent"
+        [ngModel]="toDateTimeLocalType(startedAt)"
+        (change)="
+          updateMeeting({
+            startedAt: $any($event.target).value
+          })
+        "
+        #startedAtInput
+      />
+      <span class="absolute translate-y-3 translate-x-4 text-xs font-medium">
+        Pick
+      </span>
+      <button
+        type="button"
+        class="
+          bg-sky-600
+          hover:bg-sky-700
+          rounded-full
+          text-white text-xs
+          px-4
+          uppercase
+          font-medium
+        "
+        (click)="
+          updateMeeting({
+            startedAt: now()
+          })
+        "
+      >
+        now
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-10 text-center">
+    <div
+      class="
+        m-4
+        items-center
+        justify-center
+        text-sky-100 text-xl
+        bg-sky-900
+        rounded-full
+        h-40
+        w-40
+        inline-flex
+      "
+    >
+      <span class="inline-block">{{ expenseResult$ | async }} €</span>
+    </div>
+  </div>
+  <div class="mt-10 text-center">
+    <span #qr></span>
+  </div>
+</div>

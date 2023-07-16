@@ -1,0 +1,9 @@
+/* Add application styles & imports to this file! */
+
+button {
+  user-select: none;
+}
+
+:root {
+  font-size: 14pt;
+}
